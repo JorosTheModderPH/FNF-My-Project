@@ -1,0 +1,25 @@
+switch (curDifficulty)
+		{
+		    case 0:
+				diffText.text = "WEAK";
+				diffText.color = 0x808080;
+			case 1:
+				diffText.text = "EASY";
+				diffText.color = FlxColor.LIME;
+			case 2:
+				diffText.text = 'NORMAL';
+				diffText.color = FlxColor.YELLOW;
+			case 3:
+				diffText.text = "HARD";
+				diffText.color = FlxColor.RED;
+			case 4:
+				diffText.text = "EXPERT";
+				diffText.color = 0xFF9E80;
+			case 5:
+				diffText.text = "INSANE";
+				diffText.color = 0xB200FE;
+			case 6:
+				diffText.text = "MERCILESS";
+				diffText.color = 0x3A62BA;
+		}
+	}
