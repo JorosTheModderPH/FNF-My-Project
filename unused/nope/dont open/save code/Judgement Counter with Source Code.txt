@@ -1,0 +1,28 @@
+by matt-sudo-jpg
+
+find this line
+var timeTxt:FlxText;
+and put under it
+var judgementCounter:FlxText;
+
+then
+
+find this line
+scoreTxt.visible = !ClientPrefs.hideHud;
+and put under
+
+	judgementCounter = new FlxText(20, 0, 0, "", 20);
+	judgementCounter.setFormat(Paths.font("comic-sans.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+	judgementCounter.borderSize = 2;
+	judgementCounter.borderQuality = 2;
+	judgementCounter.scrollFactor.set();
+	judgementCounter.cameras = [camHUD];
+	judgementCounter.screenCenter(Y);
+	judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+add(judgementCounter);
+
+lastly find this line
+setOnLuas('ratingFC', ratingFC);
+and put under
+judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+and it should work :D

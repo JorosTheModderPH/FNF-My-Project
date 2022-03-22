@@ -67,13 +67,13 @@ class PlayState extends MusicBeatState
 	public static var STRUM_X_MIDDLESCROLL = -278;
 
 	public static var ratingStuff:Array<Dynamic> = [
-		['You Suck!', 0.2], //From 0% to 19%
-		['Shit', 0.4], //From 20% to 39%
+		['Skill Issue', 0.2], //From 0% to 19%
+		['Very Bad', 0.4], //From 20% to 39%
 		['Bad', 0.5], //From 40% to 49%
-		['Bruh', 0.6], //From 50% to 59%
-		['Meh', 0.69], //From 60% to 68%
-		['Nice', 0.7], //69%
-		['Good', 0.8], //From 70% to 79%
+		['Ok', 0.6], //From 50% to 59%
+		['Nice', 0.69], //From 60% to 68%
+		['Good', 0.7], //69%
+		['Awesome', 0.8], //From 70% to 79%
 		['Great', 0.9], //From 80% to 89%
 		['Sick!', 1], //From 90% to 99%
 		['Perfect!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
@@ -225,6 +225,8 @@ class PlayState extends MusicBeatState
 	public var songMisses:Int = 0;
 	public var scoreTxt:FlxText;
 	var timeTxt:FlxText;
+	var judgementCounter:FlxText;
+	var kadeEngineWatermark:FlxText;
 	var scoreTxtTween:FlxTween;
 
 	public static var campaignScore:Int = 0;
@@ -1039,6 +1041,17 @@ class PlayState extends MusicBeatState
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.hideHud;
+		judgementCounter = new FlxText(20, 0, 0, "", 20);
+     	judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+	    judgementCounter.borderSize = 2;
+     	judgementCounter.borderQuality = 2;
+    	judgementCounter.scrollFactor.set();
+    	judgementCounter.cameras = [camHUD];
+    	judgementCounter.screenCenter(Y);
+    	judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+		judgementCounter.visible = !ClientPrefs.hideHud;
+        add(judgementCounter);
+
 		add(scoreTxt);
 
 		botplayTxt = new FlxText(400, timeBarBG.y + 55, FlxG.width - 800, "BOTPLAY", 32);
@@ -1059,6 +1072,7 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
+		judgementCounter.cameras = [camHUD];
 		botplayTxt.cameras = [camHUD];
 		timeBar.cameras = [camHUD];
 		timeBarBG.cameras = [camHUD];
@@ -2317,9 +2331,9 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 
 		if(ratingName == '?') {
-			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName;
+			scoreTxt.text = 'Score: ' + songScore + ' | Health: ' + Math.round(health * 50.0) +  '% ' + '| Misses: ' + songMisses + ' | Rating: ' + ratingName;
 		} else {
-			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName + ' (' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC;//peeps wanted no integer rating
+			scoreTxt.text = 'Score: ' + songScore + ' | Health: ' + Math.round(health * 50.0) +  '% ' + '| Misses: ' + songMisses + ' | Rating: ' + ratingName + ' (' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC;//peeps wanted no integer rating
 		}
 
 		if(botplayTxt.visible) {
@@ -2377,18 +2391,34 @@ class PlayState extends MusicBeatState
 		iconP1.x = (opponentChart ? -593 : 0) + healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, (opponentChart ? -100 : 100), 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
 		iconP2.x = (opponentChart ? -593 : 0) + healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, (opponentChart ? -100 : 100), 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
 
-		if (health > 2)
-			health = 2;
+		   if (health > 2)
 
-		if (healthBar.percent < 20)
-			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
-		else
-			(opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 0;
+            health = 2;
 
-		if (healthBar.percent > 80)
-			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
-		else
-			(opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 0;
+        if (healthBar.percent < 20)
+
+            (opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 1;
+
+        else if (healthBar.percent > 80)
+
+            (opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 2;
+
+        else
+
+            (opponentChart ? iconP2 : iconP1).animation.curAnim.curFrame = 0;
+
+        if (healthBar.percent > 80)
+
+            (opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 1;
+
+        else if (healthBar.percent < 20)
+
+            (opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 2;
+
+        else
+
+            (opponentChart ? iconP1 : iconP2).animation.curAnim.curFrame = 0;
+
 
 		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene) {
 			persistentUpdate = false;
@@ -3152,16 +3182,16 @@ class PlayState extends MusicBeatState
 	public var transitioning = false;
 	public function endSong():Void
 	{
-		//Should kill you if you tried to cheat
+		//Should kill you if you tried to cheat, even more
 		if(!startingSong) {
 			notes.forEach(function(daNote:Note) {
 				if(daNote.strumTime < songLength - Conductor.safeZoneOffset) {
-					health -= 0.05 * healthLoss;
+					health -= 0.46 * healthLoss;
 				}
 			});
 			for (daNote in unspawnNotes) {
 				if(daNote.strumTime < songLength - Conductor.safeZoneOffset) {
-					health -= 0.05 * healthLoss;
+					health -= 0.46 * healthLoss;
 				}
 			}
 
@@ -4470,7 +4500,15 @@ class PlayState extends MusicBeatState
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
+		judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+
+		kadeEngineWatermark = new FlxText(35,healthBarBG.y + 43,0,SONG.song + " " + (storyDifficulty == 6 ? "[Merciless]" :storyDifficulty == 5 ? "[Insane]" :storyDifficulty == 4 ? "[Expert]" :storyDifficulty == 3 ? "[Hard]" :storyDifficulty == 2 ? "[Normal]" : storyDifficulty == 1 ? "[Easy]" : "[Weak]") + " - PE [0.5.2h]", 16); //lol, stolen from vs mami watermark, is true i stole this thing on vs mami and it took me so long to fix the offset,feel free to use this thing on your mod.
+		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+		kadeEngineWatermark.scrollFactor.set();
+		add(kadeEngineWatermark); //yikes you really have to fix the offset depends on your stage zoom.
 	}
+
+
 
 	#if ACHIEVEMENTS_ALLOWED
 	private function checkForAchievement(achievesToCheck:Array<String> = null):String
