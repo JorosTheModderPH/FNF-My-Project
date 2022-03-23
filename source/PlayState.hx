@@ -1079,6 +1079,10 @@ class PlayState extends MusicBeatState
 		timeTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
+		if (isStoryMode)
+
+		kadeEngineWatermark.cameras = [camHUD];
+
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
 		// UI_camera.zoom = 1;
@@ -4502,10 +4506,12 @@ class PlayState extends MusicBeatState
 		setOnLuas('ratingFC', ratingFC);
 		judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
 
-		kadeEngineWatermark = new FlxText(35,healthBarBG.y + 43,0,SONG.song + " " + (storyDifficulty == 6 ? "[Merciless]" :storyDifficulty == 5 ? "[Insane]" :storyDifficulty == 4 ? "[Expert]" :storyDifficulty == 3 ? "[Hard]" :storyDifficulty == 2 ? "[Normal]" : storyDifficulty == 1 ? "[Easy]" : "[Weak]") + " - PE [0.5.2h]", 16); //lol, stolen from vs mami watermark, is true i stole this thing on vs mami and it took me so long to fix the offset,feel free to use this thing on your mod.
+		kadeEngineWatermark = new FlxText(0,healthBarBG.y + 59,0,SONG.song + " " + (storyDifficulty == 6 ? "[Merciless]" :storyDifficulty == 5 ? "[Insane]" :storyDifficulty == 4 ? "[Expert]" :storyDifficulty == 3 ? "[Hard]" :storyDifficulty == 2 ? "[Normal]" : storyDifficulty == 1 ? "[Easy]" : "[Weak]") + " - PE [0.5.2h]", 16); //lol, stolen from vs mami watermark, is true i stole this thing on vs mami and it took me so long to fix the offset,feel free to use this thing on your mod.
 		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		kadeEngineWatermark.scrollFactor.set();
-		add(kadeEngineWatermark); //yikes you really have to fix the offset depends on your stage zoom.
+		kadeEngineWatermark.cameras = [camHUD];
+		kadeEngineWatermark.visible = !ClientPrefs.hideHud;
+		add(kadeEngineWatermark); //yikes you really have to fix the offset depends on your stage zoom....nope nvm i fixed it
 	}
 
 

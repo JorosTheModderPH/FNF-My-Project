@@ -1,16 +1,1 @@
-find the "vat timeTxt:FlxText;"
-
-then put this code below "var kadeEngineWatermark:FlxText;"
-
-then find "setOnLuas('ratingFC', ratingFC);"
-
-then add another code below
-
-"kadeEngineWatermark = new FlxText(35,healthBarBG.y + 43,0,SONG.song + " " + (storyDifficulty == 6 ? "[Merciless]" :storyDifficulty == 5 ? "[Insane]" :storyDifficulty == 4 ? "[Expert]" :storyDifficulty == 3 ? "[Hard]" :storyDifficulty == 2 ? "[Normal]" : storyDifficulty == 1 ? "[Easy]" : "[Weak]") + " - PE [0.5.2h]", 16);
-		kadeEngineWatermark.setFormat(Paths.font("vcr.ttf"), 15, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
-		kadeEngineWatermark.scrollFactor.set();
-		add(kadeEngineWatermark);"
-
-then done, at "PE 0.5.2h" you can edit whatever you want.
-
-yikes you really have to fix the offset depends on your stage zoom.
+im lazy, maybe later
