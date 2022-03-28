@@ -2532,6 +2532,7 @@ class PlayState extends MusicBeatState
 				var strumAlpha:Float = strumGroup.members[daNote.noteData].alpha;
 				var strumScroll:Bool = strumGroup.members[daNote.noteData].downScroll;
 
+
 				strumX += daNote.offsetX;
 				strumY += daNote.offsetY;
 				strumAngle += daNote.offsetAngle;
@@ -3818,7 +3819,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!boyfriend.stunned)
 		{
-			health -= 0.05 * healthLoss;
+			health -= 0.02 * healthLoss;
 			if(instakillOnMiss)
 			{
 				vocals.volume = 0;
@@ -3876,6 +3877,14 @@ class PlayState extends MusicBeatState
 			char.heyTimer = 0.6;
 		} else if(!note.noAnimation) {
 			var altAnim:String = "";
+
+			if (storyDifficulty == 6) // i know in tutorial-merciless has drain health and its weird, it dosen't matter you can still beat gf tho
+                {
+		        	if(health > 0.0115)
+	            {
+	                health -= 0.0115;
+				}
+			}
 
 			var curSection:Int = Math.floor(curStep / 16);
 			if (SONG.notes[curSection] != null)
