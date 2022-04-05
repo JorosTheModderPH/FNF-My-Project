@@ -67,16 +67,17 @@ class PlayState extends MusicBeatState
 	public static var STRUM_X_MIDDLESCROLL = -278;
 
 	public static var ratingStuff:Array<Dynamic> = [
-		['Skill Issue', 0.2], //From 0% to 19%
-		['Very Bad', 0.4], //From 20% to 39%
-		['Bad', 0.5], //From 40% to 49%
-		['Ok', 0.6], //From 50% to 59%
-		['Nice', 0.69], //From 60% to 68%
-		['Good', 0.7], //69%
-		['Awesome', 0.8], //From 70% to 79%
-		['Great', 0.9], //From 80% to 89%
-		['Sick!', 1], //From 90% to 99%
-		['Perfect!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
+	    ['Hit the Notes!- [?] ', 0.01], //From 0%
+		['Skill Issue - [F]', 0.2], //From 0% to 19%
+		['Bad - [E]', 0.4], //From 20% to 39%
+		['Ok - [D]', 0.5], //From 40% to 49%
+		['Average - [C]', 0.6], //From 50% to 59%
+		['Nice - [B]', 0.69], //From 60% to 68%
+		['Good - [B+]', 0.7], //69%
+		['Awesome - [A]', 0.8], //From 70% to 79%
+		['Great - [A+]', 0.9], //From 80% to 89%
+		['Sick! - [S]', 1 ], //From 90% to 99%
+		['Perfect!! - [S+]', 1] //The value on this one isn't used actually, since Perfect is always "1"
 	];
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
@@ -3803,6 +3804,11 @@ class PlayState extends MusicBeatState
 		}
 		if (opponentChart) char = dad;
 
+		if (storyDifficulty == 6)
+			{
+			    health -= 0.115;
+			}
+
 		if(char != null && char.hasMissAnimations)
 		{
 			var daAlt = '';
@@ -3819,7 +3825,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!boyfriend.stunned)
 		{
-			health -= 0.02 * healthLoss;
+			health -= 0.0575 * healthLoss;
 			if(instakillOnMiss)
 			{
 				vocals.volume = 0;
@@ -3827,6 +3833,11 @@ class PlayState extends MusicBeatState
 			}
 
 			if(ClientPrefs.ghostTapping) return;
+
+			if (storyDifficulty == 6 && ClientPrefs.ghostTapping)
+			{
+			    health -= 0.115;
+			}
 
 			if (combo > 5 && gf != null && gf.animOffsets.exists('sad'))
 			{
@@ -3880,9 +3891,9 @@ class PlayState extends MusicBeatState
 
 			if (storyDifficulty == 6) // i know in tutorial-merciless has drain health and its weird, it dosen't matter you can still beat gf tho
                 {
-		        	if(health > 0.0115)
-	            {
-	                health -= 0.0115;
+		        	if(health > 0.023)
+	               {
+	                health -= 0.023;
 				}
 			}
 

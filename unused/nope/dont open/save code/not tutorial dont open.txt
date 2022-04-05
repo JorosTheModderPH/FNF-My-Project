@@ -1,0 +1,17 @@
+	if(storyDifficulty != 6)
+						{
+							switch(dad.curCharacter) //imma figure it out later
+							{
+								case 'no':
+									switch(storyDifficulty)
+									{
+										default:
+											health -= 0.046;
+										case 0 | 5: // easy and baby mode
+											health -= 0.023;
+									}
+								case 'none':
+									health -= 0.023;
+							}
+						}
+						else
