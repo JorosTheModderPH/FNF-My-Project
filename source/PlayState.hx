@@ -67,7 +67,7 @@ class PlayState extends MusicBeatState
 	public static var STRUM_X_MIDDLESCROLL = -278;
 
 	public static var ratingStuff:Array<Dynamic> = [
-	    ['Hit the Notes!- [?] ', 0.01], //From 0%
+	    ['Hit the Notes! - [?] ', 0.01], //From 0%
 		['Skill Issue - [F]', 0.2], //From 0% to 19%
 		['Bad - [E]', 0.4], //From 20% to 39%
 		['Ok - [D]', 0.5], //From 40% to 49%
@@ -302,8 +302,6 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.stop();
 
 		// Gameplay settings
-		healthGain = ClientPrefs.getGameplaySetting('healthgain', 1);
-		healthLoss = ClientPrefs.getGameplaySetting('healthloss', 1);
 		instakillOnMiss = ClientPrefs.getGameplaySetting('instakill', false);
 		practiceMode = ClientPrefs.getGameplaySetting('practice', false);
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay', false);
@@ -2389,8 +2387,8 @@ class PlayState extends MusicBeatState
 
 		var iconOffset:Int = 26;
 
-		iconP1.x = (opponentChart ? -593 : 0) + healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, (opponentChart ? -100 : 100), 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
-		iconP2.x = (opponentChart ? -593 : 0) + healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, (opponentChart ? -100 : 100), 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
+		iconP1.x = (opponentChart ? -774.50 : 0) + healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, (opponentChart ? -100 : 100), 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
+		iconP2.x = (opponentChart ? -774.50 : 0) + healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, (opponentChart ? -101 : 100), 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
 
 		   if (health > 2)
 
@@ -3399,16 +3397,19 @@ class PlayState extends MusicBeatState
 			case "shit": // shit
 				totalNotesHit += 0;
 				note.ratingMod = 0;
+				health -= 0.205;
 				score = 50;
 				if(!note.ratingDisabled) shits++;
 			case "bad": // bad
 				totalNotesHit += 0.5;
 				note.ratingMod = 0.5;
+				health -= 0.19;
 				score = 100;
 				if(!note.ratingDisabled) bads++;
 			case "good": // good
 				totalNotesHit += 0.75;
 				note.ratingMod = 0.75;
+				health -= 0.069;
 				score = 200;
 				if(!note.ratingDisabled) goods++;
 			case "sick": // sick
@@ -3806,7 +3807,7 @@ class PlayState extends MusicBeatState
 
 		if (storyDifficulty == 6)
 			{
-			    health -= 0.115;
+			    health -= 0.23;
 			}
 
 		if(char != null && char.hasMissAnimations)
@@ -3834,9 +3835,9 @@ class PlayState extends MusicBeatState
 
 			if(ClientPrefs.ghostTapping) return;
 
-			if (storyDifficulty == 6 && ClientPrefs.ghostTapping)
+			if (storyDifficulty == 6)
 			{
-			    health -= 0.115;
+			    health -= 0.23;
 			}
 
 			if (combo > 5 && gf != null && gf.animOffsets.exists('sad'))
@@ -3989,6 +3990,8 @@ class PlayState extends MusicBeatState
 				popUpScore(note);
 				if(combo > 9999) combo = 9999;
 			}
+
+			if (!note.isSustainNote) //finally, sustain note prevent from healing
 			health += note.hitHealth * healthGain;
 
 			if(!note.noAnimation) {
