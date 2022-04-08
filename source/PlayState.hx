@@ -170,8 +170,6 @@ class PlayState extends MusicBeatState
 	public static var chartingMode:Bool = false;
 
 	//Gameplay settings
-	public var healthGain:Float = 1;
-	public var healthLoss:Float = 1;
 	public var instakillOnMiss:Bool = false;
 	public var cpuControlled:Bool = false;
 	public var practiceMode:Bool = false;
@@ -3186,12 +3184,12 @@ class PlayState extends MusicBeatState
 		if(!startingSong) {
 			notes.forEach(function(daNote:Note) {
 				if(daNote.strumTime < songLength - Conductor.safeZoneOffset) {
-					health -= 0.46 * healthLoss;
+					health -= 0.46;
 				}
 			});
 			for (daNote in unspawnNotes) {
 				if(daNote.strumTime < songLength - Conductor.safeZoneOffset) {
-					health -= 0.46 * healthLoss;
+					health -= 0.46;
 				}
 			}
 
@@ -3783,7 +3781,7 @@ class PlayState extends MusicBeatState
 		});
 		combo = 0;
 
-		health -= daNote.missHealth * healthLoss;
+		health -= daNote.missHealth;
 		if(instakillOnMiss)
 		{
 			vocals.volume = 0;
@@ -3826,7 +3824,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!boyfriend.stunned)
 		{
-			health -= 0.0575 * healthLoss;
+			health -= 0.0575;
 			if(instakillOnMiss)
 			{
 				vocals.volume = 0;
@@ -3890,12 +3888,23 @@ class PlayState extends MusicBeatState
 		} else if(!note.noAnimation) {
 			var altAnim:String = "";
 
-			if (storyDifficulty == 6) // i know in tutorial-merciless has drain health and its weird, it dosen't matter you can still beat gf tho
-                {
-		        	if(health > 0.023)
-	               {
-	                health -= 0.023;
-				}
+			if(storyDifficulty == 6)
+						{
+							switch(dad.curCharacter) //copy and paste in old fnf fever source code
+							{
+							case 'gf':
+						        health += 0.0115; //gf no longer drains your health, she will help you instead
+							case 'dad':
+								if(health > 0.023)
+	                           {
+	                            health -= 0.023;
+							   }
+							case 'spooky':
+								if(health > 0.023)
+	                           {
+	                            health -= 0.023;
+							   }
+			         }
 			}
 
 			var curSection:Int = Math.floor(curStep / 16);
@@ -3992,7 +4001,7 @@ class PlayState extends MusicBeatState
 			}
 
 			if (!note.isSustainNote) //finally, sustain note prevent from healing
-			health += note.hitHealth * healthGain;
+			health += note.hitHealth;
 
 			if(!note.noAnimation) {
 				var daAlt = '';
